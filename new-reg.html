@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Registration - Capture Photo</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #6dd5ed, #2193b0);
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 30px 20px;
+      max-width: 700px;
+      margin: 50px auto;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      color: #2193b0;
+      margin-bottom: 25px;
+    }
+
+    input {
+      padding: 12px;
+      margin: 10px 0;
+      width: 85%;
+      max-width: 450px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      border-color: #2193b0;
+      outline: none;
+    }
+
+    button {
+      padding: 12px 24px;
+      margin: 10px 5px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      background-color: #2193b0;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background-color: #17627e;
+      transform: scale(1.03);
+    }
+
+    video, canvas {
+      margin-top: 15px;
+      border-radius: 10px;
+      border: 3px solid #2193b0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    @media (max-width: 600px) {
+      input, button {
+        width: 90%;
+      }
+
+      video, canvas {
+        width: 100%;
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Student Registration</h1>
+
+    <input type="text" id="name" placeholder="Full Name" required><br>
+    <input type="text" id="regno" placeholder="Registration Number" required><br>
+    <input type="text" id="branch" placeholder="Branch" required><br>
+    <input type="email" id="email" placeholder="Email" required><br>
+
+    <button onclick="startCamera()">🎥 Open Camera</button>
+    <button onclick="takePicture()">📸 Take Picture</button><br>
+
+    <video id="video" width="320" height="240" autoplay></video>
+    <canvas id="canvas" width="320" height="240" style="display:none;"></canvas><br>
+
+    <button onclick="downloadImage()">💾 Download Picture</button>
+  </div>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+
+    async function startCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+      } catch (err) {
+        alert("Camera access denied or not available.");
+        console.error(err);
+      }
+    }
+
+    function takePicture() {
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    }
+
+    function downloadImage() {
+      const name = document.getElementById('name').value.trim();
+      const regno = document.getElementById('regno').value.trim();
+      const branch = document.getElementById('branch').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      if (!name || !regno || !branch || !email) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      const filename = `${name} ${regno} ${branch} ${email}.jpg`;
+
+      const link = document.createElement('a');
+      link.download = filename;
+      link.href = canvas.toDataURL('image/jpeg', 0.9); // Save as JPG
+      link.click();
+    }
+  </script>
+
+</body>
+</html>

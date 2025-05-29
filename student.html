@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard</title>
+  <link rel="stylesheet" href="css/student.css">
+</head>
+<body>
+  <div class="dashboard-container">
+    <header>
+      <h1>Welcome to Student Dashboard</h1>
+      <p>Select an option below to view details:</p>
+    </header>
+    <div class="buttons-container">
+      <button class="dashboard-button" onclick="navigateTo('attendance')">📋 See Attendance</button>
+      <button class="dashboard-button" onclick="navigateTo('profile')">👤 See Profile</button>
+      <button class="dashboard-button" onclick="navigateTo('result')">🎓 See Result</button>
+    </div>
+  </div>
+  <script src="js/student.js"></script>
+</body>
+</html>
